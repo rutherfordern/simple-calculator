@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    container_name: app_calculator
+    volumes:
+      - .:/var/www
+    ports:
+      - "9000:9000"
+  nginx:
+    image: nginx:latest
+    container_name: nginx_calculator
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - .:/var/www
+    depends_on:
+      - app
